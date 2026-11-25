@@ -1,3 +1,1 @@
-<%
-    response.sendRedirect(request.getContextPath() + "/login.jsp");
-%>
+<% response.sendRedirect(request.getContextPath() + "/dashboard"); %>
