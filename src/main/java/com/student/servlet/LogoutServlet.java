@@ -7,9 +7,14 @@ import java.io.IOException;
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false);
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        HttpSession session = req.getSession(false);
         if (session != null) session.invalidate();
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        res.sendRedirect(req.getContextPath() + "/login?out=1");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        doPost(req, res);
     }
 }

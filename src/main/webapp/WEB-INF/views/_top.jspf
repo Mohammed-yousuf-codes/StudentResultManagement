@@ -1,0 +1,52 @@
+<%@ page import="com.student.util.Html, java.util.List" %><%
+    String ctx = request.getContextPath();
+    String admin = (String) session.getAttribute("admin");
+    String csrf = (String) session.getAttribute("csrf");
+    String[] flash = (String[]) session.getAttribute("flash");
+    if (flash != null) session.removeAttribute("flash");
+    @SuppressWarnings("unchecked")
+    List<String> errors = (List<String>) request.getAttribute("errors");
+%><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= Html.esc(pageTitle) %> · Result Register</title>
+<link rel="icon" href="<%= ctx %>/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="<%= ctx %>/css/style.css">
+<script src="<%= ctx %>/js/app.js" defer></script>
+</head>
+<body>
+<header class="mast">
+  <div class="mast-inner">
+    <a class="mast-name" href="<%= ctx %>/dashboard">
+      <span class="monogram">RR</span>
+      <span><small>Controller of Examinations</small>Result Register</span>
+    </a>
+    <div class="mast-user">
+      <span><%= Html.esc(admin) %></span>
+      <a href="<%= ctx %>/account">Password</a>
+      <form method="post" action="<%= ctx %>/logout">
+        <input type="hidden" name="_csrf" value="<%= Html.esc(csrf) %>">
+        <button type="submit">Sign out</button>
+      </form>
+    </div>
+  </div>
+  <nav class="tabs" aria-label="Sections">
+    <a href="<%= ctx %>/dashboard" class="<%= "dashboard".equals(nav) ? "on" : "" %>">Overview</a>
+    <a href="<%= ctx %>/students" class="<%= "students".equals(nav) ? "on" : "" %>">Students</a>
+    <a href="<%= ctx %>/subjects" class="<%= "subjects".equals(nav) ? "on" : "" %>">Subjects</a>
+    <a href="<%= ctx %>/marks" class="<%= "marks".equals(nav) ? "on" : "" %>">Mark sheet</a>
+    <a href="<%= ctx %>/results" class="<%= "results".equals(nav) ? "on" : "" %>">Results</a>
+  </nav>
+</header>
+<main class="page">
+<% if (flash != null) { %>
+  <p class="notice <%= "ok".equals(flash[0]) ? "notice-ok" : "notice-err" %>" role="status"><%= Html.esc(flash[1]) %></p>
+<% } %>
+<% if (errors != null && !errors.isEmpty()) { %>
+  <div class="notice notice-err" role="alert">
+    <b><%= errors.size() == 1 ? "This needs fixing:" : "These need fixing:" %></b>
+    <ul><% for (String e : errors) { %><li><%= Html.esc(e) %></li><% } %></ul>
+  </div>
+<% } %>
